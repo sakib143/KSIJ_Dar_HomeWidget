@@ -4,12 +4,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.bumptech.glide.Glide;
 import com.learn.widgettest.R;
-import com.squareup.picasso.Picasso;
 
 
 public class MovieActivity extends AppCompatActivity {
-    private static final String LOG_TAG = MovieActivity.class.getSimpleName();
+    private static final String LOG_TAG = "==> MovieActivity ";
 
     public static final String EXTRA_URL = "extra_url";
 
@@ -23,9 +24,7 @@ public class MovieActivity extends AppCompatActivity {
         Log.v(LOG_TAG, "onCreate(): url = " + url);
 
         if (url != null) {
-            Picasso.with(this)
-                    .load(url)
-                    .into(imageView);
+            Glide.with(this).load(url).into(imageView);
         }
     }
 }

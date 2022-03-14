@@ -15,7 +15,7 @@ import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
 
 public class RestClient {
-    private static final String BASE_URL = "https://api.themoviedb.org";
+    private static final String BASE_URL = "http://tv.fahm-technologies.com/api/wbl/";
     private MovieService mMovieService;
 
     public RestClient() {
@@ -25,23 +25,23 @@ public class RestClient {
         httpClient.interceptors().add(
                 new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY));
 
-        httpClient.interceptors().add(new Interceptor() {
-            @Override
-            public Response intercept(Interceptor.Chain chain) throws IOException {
-                Request original = chain.request();
-                HttpUrl originalHttpUrl = original.httpUrl();
-
-                HttpUrl.Builder builder = originalHttpUrl.newBuilder()
-                        .addQueryParameter("api_key", BuildConfig.API_KEY);
-
-                Request.Builder requestBuilder = original.newBuilder()
-                        .url(builder.build())
-                        .method(original.method(), original.body());
-
-                Request request = requestBuilder.build();
-                return chain.proceed(request);
-            }
-        });
+//        httpClient.interceptors().add(new Interceptor() {
+//            @Override
+//            public Response intercept(Interceptor.Chain chain) throws IOException {
+//                Request original = chain.request();
+//                HttpUrl originalHttpUrl = original.httpUrl();
+//
+//                HttpUrl.Builder builder = originalHttpUrl.newBuilder()
+//                        .addQueryParameter("api_key", BuildConfig.API_KEY);
+//
+//                Request.Builder requestBuilder = original.newBuilder()
+//                        .url(builder.build())
+//                        .method(original.method(), original.body());
+//
+//                Request request = requestBuilder.build();
+//                return chain.proceed(request);
+//            }
+//        });
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)

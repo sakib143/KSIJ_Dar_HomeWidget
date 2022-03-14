@@ -2,48 +2,68 @@ package com.learn.widgettest.widget;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
+import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.learn.widgettest.R;
 import com.learn.widgettest.app.App;
-import com.learn.widgettest.model.Movie;
 import com.learn.widgettest.rest.model.MovieResponse;
 import com.learn.widgettest.rest.service.MovieService;
 import com.learn.widgettest.ui.activity.MovieActivity;
 import com.learn.widgettest.util.ImageUtility;
-import com.squareup.picasso.Picasso;
-
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import retrofit.Call;
 
+
 public class StackWidgetRemoteViewsService extends RemoteViewsService {
-    private static final String LOG_TAG = StackWidgetRemoteViewsService.class.getSimpleName();
+    private static final String LOG_TAG = " Service ==>";
+
+    private List<MovieResponse.Datum> mMovies;
+
 
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
         return new RemoteViewsFactory() {
-            private List<Movie> mMovies;
 
             @Override
-            public void onCreate() { }
+            public void onCreate() {
+                Log.v(LOG_TAG, "onCreate()");
+            }
 
             @Override
             public void onDataSetChanged() {
                 Log.v(LOG_TAG, "onDataSetChanged()");
-                MovieService movieService = App.getRestClient().getMovieService();
-                Call<MovieResponse> call = movieService.getMovies(MovieService.SORT_BY_POPULARITY_DESC, 1);
-
                 try {
-                    MovieResponse response = call.execute().body();
-                    List<Movie> movies = response.getMovies();
-                    mMovies = movies;
-                    Log.v(LOG_TAG, "onDataSetChanged(): mMovies.size() = " + mMovies.size());
-                } catch (IOException e) {
-                    Log.e(LOG_TAG, "ERROR: ", e);
+                    MovieService movieService = App.getRestClient().getMovieService();
+                    Map<String, String> map = new HashMap<>();
+                    map.put("Mode", "getdarwallpaper");
+                    Call<MovieResponse> call = movieService.getMovies(map);
+                    try {
+                        MovieResponse response = call.execute().body();
+                        List<MovieResponse.Datum> movies = response.getData();
+                        mMovies = movies;
+
+                        Log.v(LOG_TAG, "Array size is ???  = " + mMovies.size());
+                        Toast.makeText(getApplicationContext(), "List size is " + mMovies.size(), Toast.LENGTH_SHORT).show();
+
+                    } catch (IOException e) {
+                        Log.e(LOG_TAG, "ERROR: ", e);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
 
@@ -61,18 +81,29 @@ public class StackWidgetRemoteViewsService extends RemoteViewsService {
 
                 RemoteViews views = new RemoteViews(getPackageName(), R.layout.widget_stack_item);
 
-                String posterUrl = ImageUtility
-                        .getImageUrl(mMovies.get(position).getPosterPath());
-                Log.v(LOG_TAG, "posterUrl = " + posterUrl);
+                String posterUrl = ImageUtility.getImageUrl(mMovies.get(position).getDarimage());
 
-                try {
-                    Bitmap poster = Picasso.with(StackWidgetRemoteViewsService.this)
-                            .load(posterUrl)
-                            .get();
-                    views.setImageViewBitmap(R.id.widget_movie_poster, poster);
-                }catch (IOException e) {
-                    Log.e(LOG_TAG, "ERROR: ", e);
+                Log.e("posterUrl " ,"==>  " + posterUrl);
+
+                if(posterUrl == null || posterUrl.equalsIgnoreCase("null")) {
+                    views.setViewVisibility(R.id.widget_movie_poster, View.GONE);
+                } else {
+                    views.setViewVisibility(R.id.widget_movie_poster, View.VISIBLE);
+                    try {
+                        Bitmap bitmap = Glide.with(getApplicationContext())
+                                .asBitmap()
+                                .load(mMovies.get(position).getDarimage())
+                                .submit(512, 512)
+                                .get();
+                        views.setImageViewBitmap(R.id.widget_movie_poster, bitmap);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        views.setViewVisibility(R.id.widget_movie_poster, View.GONE);
+                    }
                 }
+
+
+                views.setTextViewText(R.id.title, mMovies.get(position).getDartext());
 
                 final Intent fillInIntent = new Intent();
                 fillInIntent.putExtra(MovieActivity.EXTRA_URL, posterUrl);
@@ -93,9 +124,9 @@ public class StackWidgetRemoteViewsService extends RemoteViewsService {
 
             @Override
             public long getItemId(int position) {
-                if (position < mMovies.size()) {
-                    return mMovies.get(position).getId();
-                }
+//                if (position < mMovies.size()) {
+//                    return mMovies.get(position).getId();
+//                }
                 return position;
             }
 
