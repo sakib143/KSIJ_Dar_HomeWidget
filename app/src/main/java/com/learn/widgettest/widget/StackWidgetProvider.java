@@ -50,11 +50,11 @@ public class StackWidgetProvider extends AppWidgetProvider {
             intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
             views.setRemoteAdapter(R.id.widget_stack, intent);
 
-//            Intent clickIntentTemplate =  new Intent(context, MovieActivity.class);
-//            PendingIntent clickPendingIntentTemplate = TaskStackBuilder.create(context)
-//                    .addNextIntentWithParentStack(clickIntentTemplate)
-//                    .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-//            views.setPendingIntentTemplate(R.id.widget_stack, clickPendingIntentTemplate);
+            Intent clickIntentTemplate =  new Intent(context, MovieActivity.class);
+            PendingIntent clickPendingIntentTemplate = TaskStackBuilder.create(context)
+                    .addNextIntentWithParentStack(clickIntentTemplate)
+                    .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+            views.setPendingIntentTemplate(R.id.widget_stack, clickPendingIntentTemplate);
 
             views.setEmptyView(R.id.widget_stack, R.id.widget_empty);
 
@@ -68,7 +68,7 @@ public class StackWidgetProvider extends AppWidgetProvider {
                     appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_stack);
                     handler.postDelayed(this, 1000 *  60 ); //now is every 2 minutes.
                 }
-            }, 1000 *  60 ); //Every 120000 ms (2 minutes)
+            }, 1000 *  60 ); //2 minutes
 
         }
     }

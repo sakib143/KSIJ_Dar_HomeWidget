@@ -106,7 +106,9 @@ public class StackWidgetRemoteViewsService extends RemoteViewsService {
                 views.setTextViewText(R.id.title, mMovies.get(position).getDartext());
 
                 final Intent fillInIntent = new Intent();
-                fillInIntent.putExtra(MovieActivity.EXTRA_URL, posterUrl);
+                fillInIntent.putExtra(MovieActivity.EXTRA_URL, mMovies.get(position).getDarimage());
+                fillInIntent.putExtra(MovieActivity.EXTRA_TEXT, mMovies.get(position).getDartext());
+
                 views.setOnClickFillInIntent(R.id.widget_stack_item, fillInIntent);
 
                 return views;
