@@ -99,10 +99,6 @@ public class MainActivityFragment extends Fragment {
                 new SlideInBottomAnimationAdapter(mMovieAdapter);
         animationAdapter.setDuration(500);
         recyclerView.setAdapter(animationAdapter);
-
-        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
-        recyclerView.addItemDecoration(new SpacesItemDecoration(4, 4, 4, 4));
-        recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
     }
 

@@ -83,7 +83,6 @@ public class StackWidgetRemoteViewsService extends RemoteViewsService {
 
                 String posterUrl = ImageUtility.getImageUrl(mMovies.get(position).getDarimage());
 
-                Log.e("posterUrl " ,"==>  " + posterUrl);
 
                 if(posterUrl == null || posterUrl.equalsIgnoreCase("null")) {
                     views.setViewVisibility(R.id.widget_movie_poster, View.GONE);
@@ -102,8 +101,11 @@ public class StackWidgetRemoteViewsService extends RemoteViewsService {
                     }
                 }
 
+                Log.e("=>","date is " + mMovies.get(position).getMsgdate());
+
 
                 views.setTextViewText(R.id.title, mMovies.get(position).getDartext());
+                views.setTextViewText(R.id.tvDate, mMovies.get(position).getMsgdate());
 
                 final Intent fillInIntent = new Intent();
                 fillInIntent.putExtra(MovieActivity.EXTRA_URL, mMovies.get(position).getDarimage());
