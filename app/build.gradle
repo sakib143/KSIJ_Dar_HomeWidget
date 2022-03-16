@@ -1,3 +1,5 @@
+import java.text.SimpleDateFormat
+
 plugins {
     id 'com.android.application'
 }
@@ -31,6 +33,17 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    android.applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            outputFileName = "KSIJ Dar-${variant.name} ${getTimestamp()}.apk"
+        }
+    }
+}
+
+static def getTimestamp() {
+    def df = new SimpleDateFormat("[dd-MMM]")
+    df.setTimeZone(TimeZone.getTimeZone("UTC"))
+    return df.format(new Date())
 }
 
 dependencies {
