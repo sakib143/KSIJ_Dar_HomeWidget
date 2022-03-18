@@ -52,6 +52,17 @@ public class MovieResponse {
         @SerializedName("msgdate")
         @Expose
         private String msgdate;
+        @SerializedName("msgtype")
+        @Expose
+        private String msgtype;
+
+        public String getMsgtype() {
+            return msgtype;
+        }
+
+        public void setMsgtype(String msgtype) {
+            this.msgtype = msgtype;
+        }
 
         public String getDartext() {
             return dartext;
