@@ -2,11 +2,8 @@ package com.learn.widgettest.ui.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,8 +23,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.learn.widgettest.R;
 import com.learn.widgettest.rest.model.MovieResponse;
-import com.learn.widgettest.ui.activity.MovieActivity;
-import com.learn.widgettest.util.ImageUtility;
 import java.util.List;
 
 public class MovieAdapter extends  RecyclerView.Adapter<RecyclerView.ViewHolder> {
